@@ -1,0 +1,2 @@
+# Dumb-EDR
+ School project.
