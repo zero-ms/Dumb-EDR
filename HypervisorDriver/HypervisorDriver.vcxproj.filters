@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
+      <Extensions>inf;inv;inx;mof;mc;</Extensions>
+    </Filter>
+    <Filter Include="vmx">
+      <UniqueIdentifier>{80baf07a-d389-4258-87b3-7bd59fb44b4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{8198a894-95d2-4fb1-943e-c273c8ab7f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ioctl">
+      <UniqueIdentifier>{b035a0fe-0f73-4f07-ab1d-5c995ec059d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="irp">
+      <UniqueIdentifier>{fad7a7ee-e42d-48e0-8c85-29dd43c7b492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cr">
+      <UniqueIdentifier>{40426ce8-b458-43a9-97a0-9d2c30ea3219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{640476df-51ee-49fb-ae2d-4b23492c92f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HypervisorDriver.c" />
+    <ClCompile Include="ioctl.c">
+      <Filter>ioctl</Filter>
+    </ClCompile>
+    <ClCompile Include="irp.c">
+      <Filter>irp</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.c">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.c">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="vmx.c">
+      <Filter>vmx</Filter>
+    </ClCompile>
+    <ClCompile Include="processor.c">
+      <Filter>vmx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="vmx.asm">
+      <Filter>vmx</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HypervisorDriver.h" />
+    <ClInclude Include="logger.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="ioctl.h">
+      <Filter>ioctl</Filter>
+    </ClInclude>
+    <ClInclude Include="irp.h">
+      <Filter>irp</Filter>
+    </ClInclude>
+    <ClInclude Include="msr.h">
+      <Filter>cr</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="vmx.h">
+      <Filter>vmx</Filter>
+    </ClInclude>
+    <ClInclude Include="processor.h">
+      <Filter>vmx</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
