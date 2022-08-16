@@ -8,9 +8,6 @@
     <Filter Include="vmx">
       <UniqueIdentifier>{80baf07a-d389-4258-87b3-7bd59fb44b4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="util">
-      <UniqueIdentifier>{8198a894-95d2-4fb1-943e-c273c8ab7f37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ioctl">
       <UniqueIdentifier>{b035a0fe-0f73-4f07-ab1d-5c995ec059d1}</UniqueIdentifier>
     </Filter>
@@ -23,6 +20,12 @@
     <Filter Include="memory">
       <UniqueIdentifier>{640476df-51ee-49fb-ae2d-4b23492c92f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="asm">
+      <UniqueIdentifier>{6362c067-68cb-4d9b-88ec-a6628ac01761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{8198a894-95d2-4fb1-943e-c273c8ab7f37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HypervisorDriver.c" />
@@ -32,8 +35,8 @@
     <ClCompile Include="irp.c">
       <Filter>irp</Filter>
     </ClCompile>
-    <ClCompile Include="logger.c">
-      <Filter>util</Filter>
+    <ClCompile Include="common.c">
+      <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="memory.c">
       <Filter>memory</Filter>
@@ -44,16 +47,14 @@
     <ClCompile Include="processor.c">
       <Filter>vmx</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="vmx.asm">
-      <Filter>vmx</Filter>
-    </MASM>
+    <ClCompile Include="ept.c">
+      <Filter>memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HypervisorDriver.h" />
-    <ClInclude Include="logger.h">
-      <Filter>util</Filter>
+    <ClInclude Include="common.h">
+      <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="ioctl.h">
       <Filter>ioctl</Filter>
@@ -73,5 +74,19 @@
     <ClInclude Include="processor.h">
       <Filter>vmx</Filter>
     </ClInclude>
+    <ClInclude Include="ept.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="vmcs.h">
+      <Filter>vmx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="Main.asm">
+      <Filter>asm</Filter>
+    </MASM>
+    <MASM Include="VmExitHandler.asm">
+      <Filter>asm</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

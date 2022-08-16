@@ -1,9 +1,9 @@
 #include "HypervisorDriver.h"
 
-/*드라이버가 로드될 때 호출되는 루틴이다. 일반적인 프로그램에서의 main함수와 비슷하다.*/
 NTSTATUS
 DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) {
-	UNREFERENCED_PARAMETER(RegistryPath);	/*드라이버에서는 사용하지 않는 파라미터는 에러로 간주하므로, 사용하지 않는다고 명시한다.*/
+	/*드라이버에서는 사용하지 않는 파라미터는 에러로 간주하므로, 사용하지 않는다고 명시한다.*/
+	UNREFERENCED_PARAMETER(RegistryPath);
 
 	NTSTATUS status = STATUS_SUCCESS;
 	PDEVICE_OBJECT DeviceObject = NULL;
@@ -33,10 +33,35 @@ DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) {
 		DbgPrint("[*] There were some errors in creating device.\n");
 	}
 
+	__try
+	{
+		//
+		// Initiating EPTP and VMX
+		//
+		PEPTP EPTP = InitializeEptp();
+
+		InitializeVmx();
+
+		for (size_t i = 0; i < (100 * PAGE_SIZE) - 1; i++)
+		{
+			void* TempAsm = "\xF4";
+			memcpy(g_VirtualGuestMemoryAddress + i, TempAsm, 1);
+		}
+
+		//
+		// Launching VM for Test (in the 0th virtual processor)
+		//
+		int ProcessorID = 0;
+
+		LaunchVm(ProcessorID, EPTP);
+	}
+	__except (GetExceptionCode())
+	{
+	}
+
 	return status;
 }
 
-/*드라이버가 언로드 될 때 호출되는 루틴이다.*/
 VOID DriverUnload(PDRIVER_OBJECT DriverObject) {
 	UNICODE_STRING DosDeviceName;
 
@@ -49,7 +74,6 @@ VOID DriverUnload(PDRIVER_OBJECT DriverObject) {
 	IoDeleteDevice(DriverObject->DeviceObject);
 }
 
-/*드라이버에 지원되지 않는 타입의 IRP가 들어올 경우 이를 처리하는 루틴이다.*/
 NTSTATUS DriverUnsupported(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp) {
 	UNREFERENCED_PARAMETER(DeviceObject);
 
@@ -66,8 +90,9 @@ NTSTATUS DriverCreate(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 
-	AsmEnableVmxOperation();	/*CR4 영역의 VMXE를 활성화 시켜 VMX Operation을 수행한다.*/
-	DbgPrint("[*] VMX Operation Enabled Successfully!\n");
+	DbgPrint("[*] DriverCreate Called !");
+
+	VmptrstInstruction();
 
 	Irp->IoStatus.Status = STATUS_SUCCESS;
 	Irp->IoStatus.Information = 0;
@@ -76,7 +101,6 @@ NTSTATUS DriverCreate(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp)
 	return STATUS_SUCCESS;
 }
 
-/*IRP에서 Read 타입이 들어올 때 이를 처리하는 루틴이다.*/
 NTSTATUS DriverRead(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp) {
 	UNREFERENCED_PARAMETER(DeviceObject);
 
@@ -104,7 +128,10 @@ NTSTATUS DriverWrite(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp) {
 NTSTATUS DriverClose(IN PDEVICE_OBJECT DeviceObject, IN PIRP Irp) {
 	UNREFERENCED_PARAMETER(DeviceObject);
 
-	DbgPrint("[*] Not implemented yet.\n");
+	DbgPrint("[*] DrvClose Called !");
+
+	/*VMX를 종료한다.*/
+	TerminateVmx();
 
 	Irp->IoStatus.Status = STATUS_SUCCESS;
 	Irp->IoStatus.Information = 0;

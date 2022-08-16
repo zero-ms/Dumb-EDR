@@ -130,6 +130,9 @@
   <ItemGroup>
     <ClCompile Include="HypervisorApp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ioctl.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

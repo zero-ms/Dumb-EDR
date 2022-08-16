@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "common.h"
 
 VOID PrintChars(PCHAR  BufferAddress, size_t CountChars)
 {

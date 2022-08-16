@@ -3,25 +3,12 @@
 #include <ntddk.h>
 #include <wdm.h>
 
-// IOCTL Codes and Its meanings
-#define IOCTL_TEST 0x1 // In case of testing
+#include "irp.h"
+#include "common.h"
 
-//
-// Device type           -- in the "User Defined" range."
-//
-#define SIOCTL_TYPE 40000
+/*유저모드 프로그램과 디바이스 드라이버 사이의 데이터를 주고받는 함수이다.
+* Ioctl: Input/Output Control
+*/
+NTSTATUS DriverIoctlDispatcher(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 
-//
-// The IOCTL function codes from 0x800 to 0xFFF are for customer use.
-//
-#define IOCTL_SIOCTL_METHOD_IN_DIRECT \
-    CTL_CODE(SIOCTL_TYPE, 0x900, METHOD_IN_DIRECT, FILE_ANY_ACCESS)
-
-#define IOCTL_SIOCTL_METHOD_OUT_DIRECT \
-    CTL_CODE(SIOCTL_TYPE, 0x901, METHOD_OUT_DIRECT, FILE_ANY_ACCESS)
-
-#define IOCTL_SIOCTL_METHOD_BUFFERED \
-    CTL_CODE(SIOCTL_TYPE, 0x902, METHOD_BUFFERED, FILE_ANY_ACCESS)
-
-#define IOCTL_SIOCTL_METHOD_NEITHER \
-    CTL_CODE(SIOCTL_TYPE, 0x903, METHOD_NEITHER, FILE_ANY_ACCESS)
+#pragma alloc_text(PAGE, DriverIoctlDispatcher)

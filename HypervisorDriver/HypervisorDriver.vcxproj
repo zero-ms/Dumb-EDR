@@ -42,8 +42,9 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
     <ConfigurationType>Driver</ConfigurationType>
-    <DriverType>WDM</DriverType>
+    <DriverType>KMDF</DriverType>
     <Driver_SpectreMitigation>false</Driver_SpectreMitigation>
+    <DriverTargetPlatform>Universal</DriverTargetPlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <TargetVersion>Windows10</TargetVersion>
@@ -89,30 +90,40 @@
     <DriverSign>
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
     </DriverSign>
+    <ClCompile>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ept.c" />
     <ClCompile Include="HypervisorDriver.c" />
     <ClCompile Include="ioctl.c" />
     <ClCompile Include="irp.c" />
-    <ClCompile Include="logger.c" />
+    <ClCompile Include="common.c" />
     <ClCompile Include="memory.c" />
     <ClCompile Include="processor.c" />
     <ClCompile Include="vmx.c" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="vmx.asm" />
+    <MASM Include="Main.asm" />
+    <MASM Include="VmExitHandler.asm" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ept.h" />
     <ClInclude Include="HypervisorDriver.h" />
     <ClInclude Include="ioctl.h" />
     <ClInclude Include="irp.h" />
-    <ClInclude Include="logger.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="msr.h" />
     <ClInclude Include="processor.h" />
+    <ClInclude Include="vmcs.h" />
     <ClInclude Include="vmx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
